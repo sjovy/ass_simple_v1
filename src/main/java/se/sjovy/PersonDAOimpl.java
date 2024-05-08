@@ -100,16 +100,70 @@ public class PersonDAOimpl implements PersonDAO {
 
     @Override
     public List<Person> selectAllPersons() {
-        return null;
+        List<Person> persons = new ArrayList<>();
+        String sql = "SELECT * FROM person";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("person_id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+
+                Person person = new Person(firstName, lastName);
+                person.setId(id);
+                persons.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseHelper.closeConnection();
+        }
+
+        return persons;
     }
 
     @Override
     public void deletePerson(int id) {
-        // Return false as this method is not implemented
+        String sql = "DELETE FROM person WHERE person_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Deleting user failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseHelper.closeConnection();
+        }
     }
 
     @Override
     public void updatePerson(Person person) {
-        // Return false as this method is not implemented
+        String sql = "UPDATE person SET first_name = ?, last_name = ? WHERE person_id = ?";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, person.getFirstName());
+            preparedStatement.setString(2, person.getLastName());
+            preparedStatement.setInt(3, person.getId());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Updating user failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseHelper.closeConnection();
+        }
     }
 }
