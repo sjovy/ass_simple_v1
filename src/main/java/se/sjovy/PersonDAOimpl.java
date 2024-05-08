@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonDAOimpl implements PersonDAO {
+public class PersonDAOimpl implements PersonFetchDAO, PersonStoreDAO {
     private Connection connection;
 
     public PersonDAOimpl() {

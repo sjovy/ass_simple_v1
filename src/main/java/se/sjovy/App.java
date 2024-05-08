@@ -97,50 +97,50 @@ public class App {
     }
 
     public static void addPersonToDatabase(Person person) {
-        // Create a PersonDAOImpl object
-        PersonDAO personDAO = new PersonDAOimpl();
+        // Create a PersonStoreDAO object
+        PersonStoreDAO storeDAO = new PersonDAOimpl();
 
         // Add the person into the database
-        personDAO.insertPerson(person);
+        storeDAO.insertPerson(person);
     }
 
     public static Person getPersonById(int id) {
-        // Create a PersonDAOImpl object
-        PersonDAO personDAO = new PersonDAOimpl();
+        // Create a PersonFetchDAO object
+        PersonFetchDAO fetchDAO = new PersonDAOimpl();
 
         // Retrieve the person from the database
-        return personDAO.selectById(id);
+        return fetchDAO.selectById(id);
     }
 
     public static List<Person> getPersonsByName(String name) {
-        // Create a PersonDAOImpl object
-        PersonDAO personDAO = new PersonDAOimpl();
+        // Create a PersonFetchDAO object
+        PersonFetchDAO fetchDAO = new PersonDAOimpl();
 
         // Retrieve the persons from the database
-        return personDAO.selectByName(name);
+        return fetchDAO.selectByName(name);
     }
 
     public static List<Person> getAllPersons() {
-        // Create a PersonDAOImpl object
-        PersonDAO personDAO = new PersonDAOimpl();
+        // Create a PersonFetchDAO object
+        PersonFetchDAO fetchDAO = new PersonDAOimpl();
 
         // Retrieve all persons from the database
-        return personDAO.selectAllPersons();
+        return fetchDAO.selectAllPersons();
     }
 
     public static void deletePerson(int id) {
-        // Create a PersonDAOImpl object
-        PersonDAO personDAO = new PersonDAOimpl();
+        // Create a PersonStoreDAO object
+        PersonStoreDAO storeDAO = new PersonDAOimpl();
 
         // Delete the person from the database
-        personDAO.deletePerson(id);
+        storeDAO.deletePerson(id);
     }
 
     public static void updatePerson(Person person) {
-        // Create a PersonDAOImpl object
-        PersonDAO personDAO = new PersonDAOimpl();
+        // Create a PersonStoreDAO object
+        PersonStoreDAO storeDAO = new PersonDAOimpl();
 
-        // Update the person in the database
-        personDAO.updatePerson(person);
+            // Update the person in the database
+            storeDAO.updatePerson(person);
     }
 }
