@@ -16,7 +16,7 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
 
     @Override
 public void insertTodoItem(TodoItem todoItem) {
-    String sql = "INSERT INTO todoitem (todo_id, title, description, deadline, done, assignee_id) VALUES (NULL, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO todo_item (todo_id, title, description, deadline, done, assignee_id) VALUES (NULL, ?, ?, ?, ?, ?)";
 
     try {
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
