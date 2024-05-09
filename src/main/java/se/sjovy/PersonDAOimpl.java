@@ -70,13 +70,12 @@ public class PersonDAOimpl implements PersonFetchDAO, PersonStoreDAO {
     @Override
     public List<Person> selectByName(String name) {
         List<Person> persons = new ArrayList<>();
-        String[] names = name.split(" ");
-        String sql = "SELECT * FROM person WHERE first_name = ? AND last_name = ?";
+        String sql = "SELECT * FROM person WHERE first_name = ? OR last_name = ?";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, names[0]);
-            preparedStatement.setString(2, names[1]);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 

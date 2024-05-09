@@ -12,7 +12,7 @@ public class PersonHandler {
             System.out.println("4. Fetch all persons");
             System.out.println("5. Delete a person");
             System.out.println("6. Update a person");
-            System.out.println("9. Exit");
+            System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -39,7 +39,7 @@ public class PersonHandler {
                     break;
 
                 case 3:
-                    System.out.print("Enter person name (first name and last name separated by a space): ");
+                    System.out.print("Enter person name: ");
                     scanner.nextLine(); // Consume newline left-over
                     String name = scanner.nextLine();
 
@@ -79,7 +79,7 @@ public class PersonHandler {
                     System.out.println("Person with ID " + idToUpdate + " has been updated.");
                     break;
 
-                case 9:
+                case 0:
                     System.out.println("Exiting...");
                     scanner.close();
                     System.exit(0);

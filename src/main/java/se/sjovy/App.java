@@ -10,7 +10,7 @@ public class App {
         while (true) {
             System.out.println("1. Person operations");
             System.out.println("2. TodoItem operations");
-            System.out.println("9. Exit");
+            System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -24,7 +24,7 @@ public class App {
                     TodoItemHandler.handleTodoItemOperations(scanner);
                     break;
 
-                case 9:
+                case 0:
                     System.out.println("Exiting...");
                     scanner.close();
                     System.exit(0);

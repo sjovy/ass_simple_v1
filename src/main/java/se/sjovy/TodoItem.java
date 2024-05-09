@@ -13,7 +13,7 @@ public class TodoItem {
 
     // constructor
     public TodoItem(String title, String description, String deadline, boolean done, int assigneeId) {
-        this.title = title;
+            this.title = title;
         this.description = description;
         this.deadline = LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.done = done;
