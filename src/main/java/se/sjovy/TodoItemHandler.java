@@ -11,14 +11,14 @@ public class TodoItemHandler {
             System.out.println("4. Fetch TodoItems by done status");
             System.out.println("5. Fetch TodoItems by assignee ID");
             System.out.println("6. Fetch TodoItems by assignee Name");
-
+            System.out.println("7. Fetch unassigned TodoItems");
             System.out.println("8. Delete TodoItem by ID");
             System.out.println("9. Update TodoItem by ID");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -33,11 +33,16 @@ public class TodoItemHandler {
 
                     System.out.print("Is the task done? (true/false): ");
                     boolean done = scanner.nextBoolean();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
 
                     System.out.print("Enter assignee ID: ");
-                    int assigneeId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    Integer assigneeId = null;
+                    String assigneeIdInput = scanner.nextLine();
+                    try {
+                        assigneeId = Integer.parseInt(assigneeIdInput);
+                    } catch (NumberFormatException e) {
+                        // assigneeId remains null
+                    }
 
                     TodoItem todoItem = createTodoItem(title, description, deadline, done, assigneeId);
                     addTodoItemToDatabase(todoItem);
@@ -53,7 +58,7 @@ public class TodoItemHandler {
                 case 3:
                     System.out.print("Enter the ID of the TodoItem to fetch: ");
                     int id = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     System.out.println("Fetching TodoItem with ID " + id + "...");
                     TodoItem fetchedTodoItem = fetchTodoItemById(id);
                     System.out.println(fetchedTodoItem);
@@ -62,7 +67,7 @@ public class TodoItemHandler {
                 case 4:
                     System.out.print("Enter the done status to fetch by (true/false): ");
                     boolean doneStatus = scanner.nextBoolean();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     System.out.println("Fetching TodoItems with done status " + doneStatus + "...");
                     List<TodoItem> todoItemsByDoneStatus = fetchTodoItemsByDoneStatus(doneStatus);
                     todoItemsByDoneStatus.forEach(System.out::println);
@@ -71,7 +76,7 @@ public class TodoItemHandler {
                 case 5:
                     System.out.print("Enter the assignee ID to fetch by: ");
                     int fetchedAssigneeId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     System.out.println("Fetching TodoItems with assignee ID " + fetchedAssigneeId + "...");
                     List<TodoItem> todoItemsByAssignee = fetchTodoItemsByAssigneeId(fetchedAssigneeId);
                     todoItemsByAssignee.forEach(System.out::println);
@@ -85,10 +90,17 @@ public class TodoItemHandler {
                     todoItemsByAssigneeName.forEach(System.out::println);
                     break;
 
+                case 7:
+                    System.out.println("Fetching unassigned TodoItems...");
+                    TodoItemFetchDAO fetchDAO = new TodoItemDAOImpl();
+                    List<TodoItem> unassignedTodoItems = fetchDAO.findByUnassignedTodoItem();
+                    unassignedTodoItems.forEach(System.out::println);
+                    break;
+
                 case 8:
                     System.out.print("Enter the ID of the TodoItem to delete: ");
                     int deleteId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     System.out.println("Deleting TodoItem with ID " + deleteId + "...");
                     deleteTodoItem(deleteId);
                     break;
@@ -96,7 +108,7 @@ public class TodoItemHandler {
                 case 9:
                     System.out.print("Enter the ID of the TodoItem to update: ");
                     int updateId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     System.out.println("Updating TodoItem with ID " + updateId + "...");
                     System.out.print("Enter the new title: ");
                     String newTitle = scanner.nextLine();
@@ -106,10 +118,10 @@ public class TodoItemHandler {
                     String newDeadline = scanner.nextLine();
                     System.out.print("Is the task done? (true/false): ");
                     boolean newDone = scanner.nextBoolean();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     System.out.print("Enter the new assignee ID: ");
                     int newAssigneeId = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     TodoItem updatedTodoItem = new TodoItem(newTitle, newDescription, newDeadline, newDone, newAssigneeId);
                     updatedTodoItem.setId(updateId);
                     updateTodoItem(updatedTodoItem);
@@ -127,9 +139,9 @@ public class TodoItemHandler {
     }
 
     // Method to instantiate a TodoItem object
-    public static TodoItem createTodoItem(String title, String description, String deadline, boolean done, int assigneeId) {
-    return new TodoItem(title, description, deadline, done, assigneeId);
-}
+    public static TodoItem createTodoItem(String title, String description, String deadline, boolean done, Integer assigneeId) {
+        return new TodoItem(title, description, deadline, done, assigneeId);
+    }
 
     public static void addTodoItemToDatabase(TodoItem todoItem) {
         // Create a TodoItemStoreDAO object

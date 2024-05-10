@@ -25,7 +25,11 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
             java.sql.Date sqlDate = java.sql.Date.valueOf(todoItem.getDeadline());
             preparedStatement.setDate(3, sqlDate);
             preparedStatement.setBoolean(4, todoItem.isDone());
-            preparedStatement.setInt(5, todoItem.getAssigneeId());
+            if (todoItem.getAssigneeId() != null) {
+                preparedStatement.setInt(5, todoItem.getAssigneeId());
+            } else {
+                preparedStatement.setNull(5, java.sql.Types.INTEGER);
+            }
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -62,7 +66,7 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
                 String description = resultSet.getString("description");
                 LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
                 boolean done = resultSet.getBoolean("done");
-                int assigneeId = resultSet.getInt("assignee_id");
+                Integer assigneeId = resultSet.getObject("assignee_id", Integer.class);
 
                 TodoItem todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeId);
                 todoItem.setId(id);
@@ -92,7 +96,7 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
                 String description = resultSet.getString("description");
                 LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
                 boolean done = resultSet.getBoolean("done");
-                int assigneeId = resultSet.getInt("assignee_id");
+                Integer assigneeId = resultSet.getObject("assignee_id", Integer.class);
 
                 todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeId);
                 todoItem.setId(id);
@@ -121,7 +125,7 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
                 String title = resultSet.getString("title");
                 String description = resultSet.getString("description");
                 LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
-                int assigneeId = resultSet.getInt("assignee_id");
+                Integer assigneeId = resultSet.getObject("assignee_id", Integer.class);
 
                 TodoItem todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeId);
                 todoItem.setId(id);
@@ -152,8 +156,9 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
                 String description = resultSet.getString("description");
                 LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
                 boolean done = resultSet.getBoolean("done");
+                Integer assigneeIdResult = resultSet.getObject("assignee_id", Integer.class);
 
-                TodoItem todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeId);
+                TodoItem todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeIdResult);
                 todoItem.setId(id);
                 todoItems.add(todoItem);
             }
@@ -186,7 +191,7 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
                 String description = resultSet.getString("description");
                 LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
                 boolean done = resultSet.getBoolean("done");
-                int assigneeId = resultSet.getInt("assignee_id");
+                Integer assigneeId = resultSet.getObject("assignee_id", Integer.class);
 
                 TodoItem todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeId);
                 todoItem.setId(id);
@@ -203,8 +208,32 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
 
     @Override
     public List<TodoItem> findByUnassignedTodoItem() {
+        List<TodoItem> todoItems = new ArrayList<>();
+        String sql = "SELECT * FROM todo_item WHERE assignee_id IS NULL";
 
-        return null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("todo_id");
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
+                boolean done = resultSet.getBoolean("done");
+                Integer assigneeId = resultSet.getObject("assignee_id", Integer.class);
+
+                TodoItem todoItem = new TodoItem(title, description, deadline.toString(), done, assigneeId);
+                todoItem.setId(id);
+                todoItems.add(todoItem);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DatabaseHelper.closeConnection();
+        }
+
+        return todoItems;
     }
 
     @Override
@@ -239,7 +268,11 @@ public class TodoItemDAOImpl implements TodoItemFetchDAO, TodoItemStoreDAO {
             java.sql.Date sqlDate = java.sql.Date.valueOf(todoItem.getDeadline());
             preparedStatement.setDate(3, sqlDate);
             preparedStatement.setBoolean(4, todoItem.isDone());
-            preparedStatement.setInt(5, todoItem.getAssigneeId());
+            if (todoItem.getAssigneeId() != null) {
+                preparedStatement.setInt(5, todoItem.getAssigneeId());
+            } else {
+                preparedStatement.setNull(5, java.sql.Types.INTEGER);
+            }
             preparedStatement.setInt(6, todoItem.getId());
 
             int affectedRows = preparedStatement.executeUpdate();

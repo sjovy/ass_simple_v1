@@ -9,11 +9,11 @@ public class TodoItem {
     private String description;
     private LocalDate deadline;
     private boolean done;
-    private int assigneeId;
+    private Integer assigneeId;
 
     // constructor
-    public TodoItem(String title, String description, String deadline, boolean done, int assigneeId) {
-            this.title = title;
+    public TodoItem(String title, String description, String deadline, boolean done, Integer assigneeId) {
+        this.title = title;
         this.description = description;
         this.deadline = LocalDate.parse(deadline, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.done = done;
@@ -41,7 +41,7 @@ public class TodoItem {
         this.done = done;
     }
 
-    public void setAssignedTo(int assignedTo) {
+    public void setAssignedTo(Integer assignedTo) {
         this.assigneeId = assigneeId;
     }
 
@@ -66,7 +66,7 @@ public class TodoItem {
         return done;
     }
 
-    public int getAssigneeId() {
+    public Integer getAssigneeId() {
         return assigneeId;
     }
 

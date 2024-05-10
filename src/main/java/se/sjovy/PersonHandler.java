@@ -40,7 +40,7 @@ public class PersonHandler {
 
                 case 3:
                     System.out.print("Enter person name: ");
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
                     String name = scanner.nextLine();
 
                     List<Person> personsFound = getPersonsByName(name);
@@ -64,7 +64,7 @@ public class PersonHandler {
                 case 6:
                     System.out.print("Enter person ID to update: ");
                     int idToUpdate = scanner.nextInt();
-                    scanner.nextLine(); // Consume newline left-over
+                    scanner.nextLine();
 
                     System.out.print("Enter new first name: ");
                     String newFirstName = scanner.nextLine();
