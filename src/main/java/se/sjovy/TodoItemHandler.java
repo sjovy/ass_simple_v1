@@ -119,6 +119,8 @@ public class TodoItemHandler {
                     System.out.print("Is the task done? (true/false): ");
                     boolean newDone = scanner.nextBoolean();
                     scanner.nextLine();
+
+
                     System.out.print("Enter the new assignee ID: ");
                     int newAssigneeId = scanner.nextInt();
                     scanner.nextLine();
